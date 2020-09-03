@@ -6,17 +6,19 @@ import numpy as np
 from torchvision import datasets, transforms
 from torch.optim.lr_scheduler import StepLR
 import matplotlib.pylab as plt
+import shutil
+import os
 
 if __name__ == '__main__':
 
     def train(epochs, model, mov_train_loader, ref_train_loader, optimizer, epoch, criterion):
         model.train()
-        a, b = 1e-7, 1e-6
+        #set regularizers for affine and deformable registration
+        a, b = 1e-5, 1e-7
         log_interval = 10
         total_loss = 0
         for batch_idx, (data, target) in enumerate(zip(mov_train_loader, ref_train_loader)):
             mov_data, ref_data = data, target
-#            print('mov', 'ref', mov_data[1], ref_data[1])
             mov_data[0] = U.to_cuda(torch.stack((mov_data[0],mov_data[0],mov_data[0]), 1).squeeze(2))
             ref_data[0] = U.to_cuda(torch.stack((ref_data[0],ref_data[0],ref_data[0]), 1).squeeze(2))
             optimizer.zero_grad()
@@ -32,12 +34,12 @@ if __name__ == '__main__':
                 print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                     epoch, batch_idx * len(mov_data), len(mov_train_loader.dataset),
                     100. * batch_idx / len(mov_train_loader), loss.item()))
-        print('Mean loss: ', total_loss/float(len(mov_train_loader.dataset)))
+        print('Mean loss: ', total_loss/float(batch_idx)) #float(len(mov_train_loader.dataset)))
 
 
     def test(model, mov_test_loader, ref_test_loader, criterion):
         model.eval()
-        a, b = 1e-7, 1e-6
+        a, b = 1e-5, 1e-7
         test_loss = 0
         correct = 0
         with torch.no_grad():
@@ -51,18 +53,24 @@ if __name__ == '__main__':
                 def_loss = b*torch.sum(torch.abs(deformable))
                 test_loss += criterion(deformed, ref_data[0]) + def_loss + aff_loss 
 
-        test_loss /= len(mov_test_loader.dataset)
+        test_loss = test_loss/float(batch_idx) #len(mov_test_loader.dataset)
 
         print('\nTest set: Average loss: {:.4f}\n'.format(
             test_loss))
+
+    if os.path.exists('data'):
+        print('data exist')
+    else:
+        os.mkdir('data')
+
 
     transform=transforms.Compose([
         transforms.ToTensor()
         ])
 
-    dataset1 = datasets.MNIST('../data', train=True, download=True,
+    dataset1 = datasets.MNIST('./data', train=True, download=True,
                        transform=transform)
-    dataset2 = datasets.MNIST('../data', train=False,
+    dataset2 = datasets.MNIST('./data', train=False,
                        transform=transform)
 
     mov_train_loader = torch.utils.data.DataLoader(dataset1, shuffle=True, batch_size=256)
@@ -78,10 +86,8 @@ if __name__ == '__main__':
 
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
     epochs = 10
-    scheduler = StepLR(optimizer, step_size=1, gamma=0.7)
     for epoch in range(1, epochs + 1):
         train(epochs, model, mov_train_loader, ref_train_loader, optimizer, epoch, criterion)
         test(model, mov_test_loader, ref_test_loader, criterion)
-        scheduler.step()
 
     torch.save(model.state_dict(), "mnist_cnn.pt")
