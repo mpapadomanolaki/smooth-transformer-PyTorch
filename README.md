@@ -12,5 +12,8 @@ python train.py
 
 # Outputs:
 
-![picture](/home/mariapap/Music/example-2d-output_7_2.png)
+![example1](/outputs/example-2d-output_7_2.png)
+
+
+![example1](/outputs/example-2d-output_1_7.png)
 
