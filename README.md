@@ -11,6 +11,7 @@ python train.py
 - matplotlib 3.2.2
 
 # Outputs:
+Examples of the output of the train.py script (result after few training epochs):
 
 ![example1](/outputs/example-2d-output_7_2.png)
 
