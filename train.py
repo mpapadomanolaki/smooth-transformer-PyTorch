@@ -14,7 +14,7 @@ if __name__ == '__main__':
     def train(epochs, model, mov_train_loader, ref_train_loader, optimizer, epoch, criterion):
         model.train()
         #set regularizers for affine and deformable registration
-        a, b = 1e-5, 1e-8
+        a, b = 1e-4, 1e-7
         log_interval = 10
         total_loss = 0
         for batch_idx, (data, target) in enumerate(zip(mov_train_loader, ref_train_loader)):
@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     def test(model, mov_test_loader, ref_test_loader, criterion):
         model.eval()
-        a, b = 1e-5, 1e-8
+        a, b = 1e-4, 1e-7
         test_loss = 0
         correct = 0
         with torch.no_grad():
