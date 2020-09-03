@@ -3,7 +3,7 @@
 This is a PyTorch implementation of the 2D transformer layer presented in https://github.com/stergioc/smooth-transformer.
 
 # To use this code:
-Run 'python train.py' to train the model.
+Run 'python train.py' to train the model.  
 Run show.py to make registration predictions on the test set.
 
 # Version of employed packages:
