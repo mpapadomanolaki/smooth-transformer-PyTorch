@@ -6,9 +6,9 @@ This is a PyTorch implementation of the 2D transformer layer presented in https:
 python train.py
 
 # Version of employed packages:
--pytorch 1.5.1
--python 3.6.10
--matplotlib 3.2.2
+- pytorch 1.5.1
+- python 3.6.10
+- matplotlib 3.2.2
 
 
 
