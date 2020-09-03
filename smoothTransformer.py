@@ -134,13 +134,8 @@ def smoothTransformer2D(inp):
     except:
         pass
 
-#    sampling_grid_norm =  sampling_grid
-    sampling_grid_norm = (normalize(sampling_grid, height, width))
-    print('max', torch.max(sampling_grid_norm))
-    print('min', torch.min(sampling_grid_norm))
-    if torch.isnan(sampling_grid_norm).any()==True:
-       print('NANNNNNNNNNNNNNNNNNN')
-#    print('NANNNNNNNNNNNNNNNNN', torch.isnan(sampling_grid_norm).any())
+    sampling_grid_norm = normalize(sampling_grid, height, width)
+
     sampling_grid_inverse = 2*base_grid - sampling_grid_norm
     mov_def = resample2D(im, sampling_grid_norm, height, width, samples, channels)
 
