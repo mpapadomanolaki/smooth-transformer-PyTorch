@@ -19,8 +19,8 @@ dataset1 = datasets.MNIST('../data', train=True, download=True,
 dataset2 = datasets.MNIST('../data', train=False,
                        transform=transform)
 
-mov_train_loader = torch.utils.data.DataLoader(dataset1, shuffle=False, batch_size=256)
-mov_test_loader = torch.utils.data.DataLoader(dataset2, shuffle=False, batch_size=256)
+mov_train_loader = torch.utils.data.DataLoader(dataset1, shuffle=True, batch_size=256)
+mov_test_loader = torch.utils.data.DataLoader(dataset2, shuffle=True, batch_size=256)
 
 ref_train_loader = torch.utils.data.DataLoader(dataset1, shuffle=True, batch_size=256)
 ref_test_loader = torch.utils.data.DataLoader(dataset2, shuffle=True, batch_size=256)
