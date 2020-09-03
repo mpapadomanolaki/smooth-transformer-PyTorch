@@ -10,5 +10,7 @@ python train.py
 - python 3.6.10
 - matplotlib 3.2.2
 
+# Outputs:
 
+file:///home/mariapap/Music/example-2d-output_7_2.png
 
