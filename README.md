@@ -12,5 +12,5 @@ python train.py
 
 # Outputs:
 
-file:///home/mariapap/Music/example-2d-output_7_2.png
+![alt text](file:///home/mariapap/Music/example-2d-output_7_2.png)
 
